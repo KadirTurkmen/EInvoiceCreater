@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inowex.EInvoiceCreater", "Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.csproj", "{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inowex.EInvoiceCreater.Bll", "Inowex.EInvoiceCreater.Bll\Inowex.EInvoiceCreater.Bll.csproj", "{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inowex.EInvoiceCreater.Dto", "Inowex.EInvoiceCreater.Dto\Inowex.EInvoiceCreater.Dto.csproj", "{2C5C0020-4B18-4C03-B91F-9B127F078721}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C5C0020-4B18-4C03-B91F-9B127F078721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C5C0020-4B18-4C03-B91F-9B127F078721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C5C0020-4B18-4C03-B91F-9B127F078721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C5C0020-4B18-4C03-B91F-9B127F078721}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
