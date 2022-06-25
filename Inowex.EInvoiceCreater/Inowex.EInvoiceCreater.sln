@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inowex.EInvoiceCreater", "Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.csproj", "{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE4E41CC-E1F2-4F9A-8076-2F431E41CF9D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {564D8C77-6349-402D-A13C-5C530DF7A05E}
+	EndGlobalSection
+EndGlobal
