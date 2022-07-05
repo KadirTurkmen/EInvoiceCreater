@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "a3czokgxp4G+AjWC2tSY4GxBEo/STEsUG5NQ3R6KOgveHxonLGarlqts4BWmxINRHDTncah+CIDfko4QFuqRaw==",
+  "dgSpecHash": "cnGT+v1TkTjT/QTazVnv815c6FIke5udwYQchR0H2z7vL/WwYIAMlDd/1LHmHd3TmjEv3AVl2T7FICZXF9fewQ==",
   "success": true,
   "projectFilePath": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Bll\\Inowex.EInvoiceCreater.Bll.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Kadir\\.nuget\\packages\\ubltr\\1.1.6\\ubltr.1.1.6.nupkg.sha512"
+  ],
   "logs": []
 }

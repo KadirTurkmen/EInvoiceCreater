@@ -1,11 +1,61 @@
 {
   "version": 3,
   "targets": {
-    "net6.0": {}
+    "net6.0": {
+      "UblTr/1.1.6": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/UblTr.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/UblTr.dll": {}
+        }
+      },
+      "Inowex.EInvoiceCreater.Dto/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Inowex.EInvoiceCreater.Dto.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Inowex.EInvoiceCreater.Dto.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "UblTr/1.1.6": {
+      "sha512": "QNIS8mpVDahSRXoM5df5WZddBhjb43URBK8Bp0EIOGNfI4p/J84/ovwVJqeVhH5gO8opbS5j4topyhxgw97HQA==",
+      "type": "package",
+      "path": "ubltr/1.1.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/net45/UblTr.dll",
+        "lib/net46/UblTr.dll",
+        "lib/net5.0/UblTr.dll",
+        "lib/net6.0/UblTr.dll",
+        "lib/netcoreapp1.0/UblTr.dll",
+        "lib/netcoreapp1.1/UblTr.dll",
+        "lib/netstandard1.3/UblTr.dll",
+        "lib/netstandard2.0/UblTr.dll",
+        "lib/netstandard2.1/UblTr.dll",
+        "ubltr.1.1.6.nupkg.sha512",
+        "ubltr.nuspec"
+      ]
+    },
+    "Inowex.EInvoiceCreater.Dto/1.0.0": {
+      "type": "project",
+      "path": "../Inowex.EInvoiceCreater.Dto/Inowex.EInvoiceCreater.Dto.csproj",
+      "msbuildProject": "../Inowex.EInvoiceCreater.Dto/Inowex.EInvoiceCreater.Dto.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0": []
+    "net6.0": [
+      "Inowex.EInvoiceCreater.Dto >= 1.0.0",
+      "UblTr >= 1.1.6"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Kadir\\.nuget\\packages\\": {},
@@ -46,7 +96,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Dto\\Inowex.EInvoiceCreater.Dto.csproj": {
+              "projectPath": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Dto\\Inowex.EInvoiceCreater.Dto.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -58,6 +112,12 @@
     "frameworks": {
       "net6.0": {
         "targetAlias": "net6.0",
+        "dependencies": {
+          "UblTr": {
+            "target": "Package",
+            "version": "[1.1.6, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
