@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 
 namespace Inowex.EInvoiceCreater.Dto
 {
+    /// <summary>
+    /// Fatura türleri
+    /// </summary>
     public enum InvoiceTypes
     {
-        IADE,
+        IADE=1,
         IHRACKAYITLI,
         ISTISNA,
         OZELMATRAH,
-        SATIS = 1,
+        SATIS,
         TEVKIFAT,
     }
 }

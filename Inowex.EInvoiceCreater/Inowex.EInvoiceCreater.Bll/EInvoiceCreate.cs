@@ -13,7 +13,7 @@ namespace Inowex.EInvoiceCreater
 {
     public interface IEInvoiceCreate
     {
-        string InvoiceToXml(Invoice invoice);
+        Response<string> InvoiceToXml(Invoice invoice);
     }
 
     public class EInvoiceCreate : IEInvoiceCreate
@@ -23,13 +23,17 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="invoice"></param>
         /// <returns></returns>
-        public string InvoiceToXml(Invoice invoice)
+        public Response<string> InvoiceToXml(Invoice invoice)
         {
+            var checkInvoice = CheckInvoice(invoice);
+            if (!checkInvoice.IsSuccess)
+                return checkInvoice;
+
             var invoiceType = GetInvoiceType(invoice);
             string invoiceAsXml = InvoiceTypeToXml(invoiceType);
             WriteToDiskAsXml(invoiceAsXml, invoiceType.ID.Value);
             
-            return invoiceAsXml;
+            return new() { Result = invoiceAsXml,IsSuccess=true };
         }
 
         /// <summary>
@@ -37,7 +41,7 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="invoice"></param>
         /// <returns></returns>
-        public InvoiceType GetInvoiceType(Invoice invoice)
+        private InvoiceType GetInvoiceType(Invoice invoice)
         {
             string _customization = "TR1.2";
             string _ublVersion = "2.1";
@@ -80,11 +84,11 @@ namespace Inowex.EInvoiceCreater
                 ///Fatura döviz para birimi.
                 DocumentCurrencyCode = new DocumentCurrencyCodeType { Value = invoice.CurrencyIso4217Code },
                 ///Fatura kalem sayısıdır.
-                LineCountNumeric = new LineCountNumericType { Value = invoice.InvoiceLine.Count() },
+                LineCountNumeric = new LineCountNumericType { Value = invoice.InvoiceLine.Count },
                 ///Fatura dönem bilgisidir. 
                 //InvoicePeriod= new PeriodType { },
                 ///İlave döküman bilgisidir.
-                //AdditionalDocumentReference = get_AdditionalDocumentReference(),
+                AdditionalDocumentReference = GetAdditionalDocumentReference(),
                 ///Mali Mühür/İmza
                 Signature = GetSignatureType(invoice),
                 ///Tedarikçi bilgileri
@@ -115,49 +119,52 @@ namespace Inowex.EInvoiceCreater
         /// Firma bilgilerini getirir.
         /// </summary>
         /// <returns></returns>
-        public PartyType GetPartyType(CompanyInformation companyInformation)
+        private PartyType GetPartyType(CompanyInformation? companyInformation)
         {
+            if(companyInformation==null)
+                return new PartyType();
+
             ///Müşteri kimlik bilgileridir.
-            List<PartyIdentificationType> partyIdentificationTypes = new List<PartyIdentificationType>();
+            List<PartyIdentificationType> partyIdentificationTypes = new();
             partyIdentificationTypes.Add(new PartyIdentificationType { ID = new IDType { schemeID = SchemeIds.VKN.ToString(), Value = companyInformation.TaxNumber } });
             if (companyInformation.MersisNo != null)
                 partyIdentificationTypes.Add(new PartyIdentificationType { ID = new IDType { schemeID = SchemeIds.MERSISNO.ToString(), Value = companyInformation.MersisNo } });
 
             ///Firma adı bilgisidir.
-            PartyNameType partyNameType = new PartyNameType { Name = new NameType1 { Value = companyInformation.Name } };
+            PartyNameType partyNameType = new(){ Name = new NameType1 { Value = companyInformation.Name } };
 
             ///Firma Daire numarası bilgisidir.
-            RoomType roomType = new RoomType { Value = companyInformation.Room };
+            RoomType roomType = new(){ Value = companyInformation.Room };
 
             ///Firma Adres Blok adı bilgisidir.
-            BlockNameType blockNameType = new BlockNameType { Value = companyInformation.BlockName };
+            BlockNameType blockNameType = new(){ Value = companyInformation.BlockName };
 
             ///Firma Bina adı bilgisidir.
-            BuildingNameType buildingNameType = new BuildingNameType { Value = companyInformation.BuildingName };
+            BuildingNameType buildingNameType = new(){ Value = companyInformation.BuildingName };
 
             ///Firma Bina numarası bilgisidir.
-            BuildingNumberType buildingNumberType = new BuildingNumberType { Value = companyInformation.BuildingNumber };
+            BuildingNumberType buildingNumberType = new() { Value = companyInformation.BuildingNumber };
 
             ///Firma Adres ilçe bilgisidir.
-            CitySubdivisionNameType citySubdivisionNameType = new CitySubdivisionNameType { Value = companyInformation.CitySubdivision };
+            CitySubdivisionNameType citySubdivisionNameType = new() { Value = companyInformation.CitySubdivision };
 
             ///Firma adres il bilgisidir.
-            CityNameType cityNameType = new CityNameType { Value = companyInformation.City };
+            CityNameType cityNameType = new() { Value = companyInformation.City };
 
             ///Firma adres ülke bilgisidir.
-            CountryType countryType = new CountryType { Name = new NameType1 { Value = companyInformation.Country }, };
+            CountryType countryType = new() { Name = new NameType1 { Value = companyInformation.Country }, };
 
             ///Firma posta adresi bilgisidir.
-            PostalZoneType postalZoneType = new PostalZoneType { Value = companyInformation.PostalZone };
+            PostalZoneType postalZoneType = new() { Value = companyInformation.PostalZone };
 
             ///Firma mail adresi ve telefon bilgisidir.
-            ContactType contactType = new ContactType { ElectronicMail = new ElectronicMailType { Value = companyInformation.Mail }, Telephone = new TelephoneType { Value = companyInformation.Phone } };
+            ContactType contactType = new() { ElectronicMail = new ElectronicMailType { Value = companyInformation.Mail }, Telephone = new TelephoneType { Value = companyInformation.Phone } };
 
             ///Firma Vergi dairesi bilgisidir.
-            PartyTaxSchemeType partyTaxSchemeType = new PartyTaxSchemeType { TaxScheme = new TaxSchemeType { Name = new NameType1 { Value = companyInformation.TaxOffice } } };
+            PartyTaxSchemeType partyTaxSchemeType = new() { TaxScheme = new TaxSchemeType { Name = new NameType1 { Value = companyInformation.TaxOffice } } };
 
             ///Firma web site adresi bilgisidir..
-            WebsiteURIType websiteURIType = new WebsiteURIType();
+            WebsiteURIType websiteURIType = new();
             if (companyInformation.WebSiteUri != null)
                 websiteURIType = new WebsiteURIType { Value = companyInformation.WebSiteUri };
 
@@ -186,7 +193,7 @@ namespace Inowex.EInvoiceCreater
         /// Müşteri bilgilerini getirir.
         /// </summary>
         /// <returns></returns>
-        public CustomerPartyType GetCustomerParty(Invoice invoice)
+        private CustomerPartyType GetCustomerParty(Invoice invoice)
         {
             return new CustomerPartyType() { Party = GetPartyType(invoice.CustomerInfo) };
         }
@@ -195,7 +202,7 @@ namespace Inowex.EInvoiceCreater
         /// Tedarikçi bilgilerini betirir.
         /// </summary>
         /// <returns></returns>
-        public SupplierPartyType GetSupplierParty(Invoice invoice)
+        private SupplierPartyType GetSupplierParty(Invoice invoice)
         {
             return new SupplierPartyType() { Party = GetPartyType(invoice.SupplierInfo) };
         }
@@ -209,11 +216,12 @@ namespace Inowex.EInvoiceCreater
         /// UBL-TR Fatura Aralık 2017
         /// Versiyon : 1.0 22/37
         /// EmbeddedDocumentBinaryObject elemanına eklenebilir.
+        /// TODO : Düzenleme yapılacak
         /// </summary>
         /// <returns></returns>
-        public DocumentReferenceType[] get_AdditionalDocumentReference()
+        private DocumentReferenceType[] GetAdditionalDocumentReference()
         {
-            List<DocumentReferenceType> documentReferenceType = new List<DocumentReferenceType>();
+            List<DocumentReferenceType> documentReferenceType = new();
             documentReferenceType.Add(new DocumentReferenceType
             {
                 ID = new IDType { Value = Guid.NewGuid().ToString() },
@@ -247,22 +255,22 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="faturaKalemDto"></param>
         /// <returns></returns>
-        public AllowanceChargeType[] GetAllowanceChargeDiscount(InvoiceLine invoiceLine)
+        private AllowanceChargeType[] GetAllowanceChargeDiscount(InvoiceLine invoiceLine, string? invoiceCurrencyCode)
         {
-            List<AllowanceChargeType> allowanceChargeTypes = new List<AllowanceChargeType>();
+            List<AllowanceChargeType> allowanceChargeTypes = new();
 
             if (invoiceLine.DiscountPrice != 0)
             {
                 allowanceChargeTypes.Add(new AllowanceChargeType
                 {
                     ///True Arttırım, False İskonto
-                    ChargeIndicator = new ChargeIndicatorType { Value = invoiceLine.DiscountPrice > 0 ? true : false },
+                    ChargeIndicator = new ChargeIndicatorType { Value = invoiceLine.DiscountPrice > 0 },
                     ///İskonto Oranı
                     MultiplierFactorNumeric = new MultiplierFactorNumericType { Value = invoiceLine.DiscountPercent / 100 },
                     ///İskonto Tutar
-                    Amount = new AmountType2 { Value = invoiceLine.DiscountPrice, currencyID = invoiceLine.CurrencyIso4217Code },
+                    Amount = new AmountType2 { Value = invoiceLine.DiscountPrice, currencyID = invoiceCurrencyCode },
                     ///İskonto tutarının uygulandığı tutar
-                    BaseAmount = new BaseAmountType { Value = invoiceLine.LineTotalAmount, currencyID = invoiceLine.CurrencyIso4217Code },
+                    BaseAmount = new BaseAmountType { Value = invoiceLine.LineTotalAmount, currencyID = invoiceCurrencyCode },
                 });
             }
 
@@ -274,9 +282,9 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="faturaKalemleri"></param>
         /// <returns></returns>
-        public InvoiceLineType[] GetInvoiceLine(List<InvoiceLine> invoiceLines, string invoiceCurrencyCode)
+        private InvoiceLineType[] GetInvoiceLine(List<InvoiceLine> invoiceLines, string? invoiceCurrencyCode)
         {
-            List<InvoiceLineType> invoiceLineTypes = new List<InvoiceLineType>();
+            List<InvoiceLineType> invoiceLineTypes = new();
 
             foreach (var invoiceLine in invoiceLines)
             {
@@ -291,7 +299,7 @@ namespace Inowex.EInvoiceCreater
                     ///Fatura kalem net tutarıdır varsa iskonto düşülür.
                     LineExtensionAmount = new LineExtensionAmountType { Value = invoiceLine.LineTotalAmount + invoiceLine.DiscountPrice, currencyID = invoiceCurrencyCode },
                     ///İskonto veya Arttırım Bilgilerini getirir.
-                    AllowanceCharge = GetAllowanceChargeDiscount(invoiceLine),
+                    AllowanceCharge = GetAllowanceChargeDiscount(invoiceLine, invoiceCurrencyCode),
                     ///Kalem vergi tutarıdır.
                     TaxTotal = GetTaxTotalInvoiceLine(invoiceLine, invoiceCurrencyCode),
                     ///Tevkifat tutarları
@@ -313,9 +321,12 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="eFaturaParametre"></param>
         /// <returns></returns>
-        public NoteType[] GetInvoiceNote(Invoice invoice)
+        private NoteType[] GetInvoiceNote(Invoice invoice)
         {
-            List<NoteType> noteTypes = new List<NoteType>();
+            if(invoice.Notes==null)
+                return Array.Empty<NoteType>();
+
+            List<NoteType> noteTypes = new();
             foreach (var note in invoice.Notes)
                 noteTypes.Add(new NoteType { Value = note });
             return noteTypes.ToArray();
@@ -326,9 +337,9 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="faturaNo"></param>
         /// <returns></returns>
-        public SignatureType[] GetSignatureType(Invoice invoice)
+        private SignatureType[] GetSignatureType(Invoice invoice)
         {
-            List<SignatureType> signatureType = new List<SignatureType>();
+            List<SignatureType> signatureType = new();
             signatureType.Add(new SignatureType
             {
                 ///Firmaya ait vergi numarası
@@ -347,7 +358,7 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="faturaKalemDto"></param>
         /// <returns></returns>
-        public TaxTotalType[] GetTaxTotal(List<InvoiceLine> invoiceLines, string invoiceCurrencyCode)
+        private TaxTotalType[] GetTaxTotal(List<InvoiceLine> invoiceLines, string? invoiceCurrencyCode)
         {
             List<Tax> kdvTotalAmount = invoiceLines.GroupBy(g => g.KDVPercent).Select(s => new Tax { Percent = s.Key, Amount = s.Sum(sum => sum.KDVAmount), TaxName = TaxTypes.KDV.ToString(), TaxCode= GetTaxTypeWithCode().Where(w => w.Key == TaxTypes.KDV).FirstOrDefault().Value }).ToList();
             List<Tax> otvTotalAmount = invoiceLines.GroupBy(g => g.OTVPercent).Select(s => new Tax { Percent = s.Key, Amount = s.Sum(sum => sum.OTVAmount), TaxName = TaxTypes.OTV.ToString(), TaxCode = GetTaxTypeWithCode().Where(w => w.Key == TaxTypes.OTV).FirstOrDefault().Value }).ToList();
@@ -356,13 +367,13 @@ namespace Inowex.EInvoiceCreater
             decimal taxableAmount = invoiceLines.Sum(s => s.LineTotalAmount);
 
             ///Vergilerin ayrıntıları
-            List<TaxSubtotalType> taxSubtotalTypes = new List<TaxSubtotalType>();
-            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(kdvTotalAmount, taxSubtotalTypes.Count(), taxableAmount, invoiceCurrencyCode));
-            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(otvTotalAmount, taxSubtotalTypes.Count(), taxableAmount, invoiceCurrencyCode));
-            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(oivTotalAmount, taxSubtotalTypes.Count(), taxableAmount, invoiceCurrencyCode));
+            List<TaxSubtotalType> taxSubtotalTypes = new();
+            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(kdvTotalAmount, taxSubtotalTypes.Count, taxableAmount, invoiceCurrencyCode));
+            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(otvTotalAmount, taxSubtotalTypes.Count, taxableAmount, invoiceCurrencyCode));
+            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(oivTotalAmount, taxSubtotalTypes.Count, taxableAmount, invoiceCurrencyCode));
 
             ///Faturadaki vergiler
-            List<TaxTotalType> taxTotalTypes = new List<TaxTotalType>();
+            List<TaxTotalType> taxTotalTypes = new();
             taxTotalTypes.Add(
                 new TaxTotalType
                 {
@@ -380,7 +391,7 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="faturaKalemDto"></param>
         /// <returns></returns>
-        public TaxTotalType GetTaxTotalInvoiceLine(InvoiceLine invoiceLine, string invoiceCurrencyCode)
+        private TaxTotalType GetTaxTotalInvoiceLine(InvoiceLine invoiceLine, string? invoiceCurrencyCode)
         {
             List<Tax> kdvTotalAmount = (new[] { new Tax { Percent = invoiceLine.KDVPercent, Amount = invoiceLine.KDVAmount, TaxName = TaxTypes.KDV.ToString(), TaxCode = GetTaxTypeWithCode().Where(w => w.Key == TaxTypes.KDV).FirstOrDefault().Value } }).ToList();
             List<Tax> otvTotalAmount = (new[] { new Tax { Percent = invoiceLine.OTVPercent, Amount = invoiceLine.OTVAmount, TaxName = TaxTypes.OTV.ToString(), TaxCode = GetTaxTypeWithCode().Where(w => w.Key == TaxTypes.OTV).FirstOrDefault().Value } }).ToList();
@@ -390,13 +401,13 @@ namespace Inowex.EInvoiceCreater
             decimal taxableAmount = invoiceLine.LineTotalAmount;
 
             ///Vergilerin ayrıntıları
-            List<TaxSubtotalType> taxSubtotalTypes = new List<TaxSubtotalType>();
-            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(kdvTotalAmount, taxSubtotalTypes.Count(), taxableAmount, invoiceCurrencyCode));
-            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(otvTotalAmount, taxSubtotalTypes.Count(), taxableAmount, invoiceCurrencyCode));
-            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(oivTotalAmount, taxSubtotalTypes.Count(), taxableAmount, invoiceCurrencyCode));
+            List<TaxSubtotalType> taxSubtotalTypes = new();
+            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(kdvTotalAmount, taxSubtotalTypes.Count, taxableAmount, invoiceCurrencyCode));
+            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(otvTotalAmount, taxSubtotalTypes.Count, taxableAmount, invoiceCurrencyCode));
+            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(oivTotalAmount, taxSubtotalTypes.Count, taxableAmount, invoiceCurrencyCode));
 
             ///Fatura kalemine ait vergiler
-            TaxTotalType taxTotalType = new TaxTotalType
+            TaxTotalType taxTotalType = new()
             {
                 ///Kaleme uygulanan tüm vergilerin toplamı
                 TaxAmount = new TaxAmountType { Value = taxTotalAmount, currencyID = invoiceCurrencyCode },
@@ -412,18 +423,18 @@ namespace Inowex.EInvoiceCreater
         /// <param name="faturaKalemleri"></param>
         /// <param name="faturaCurrencyCode"></param>
         /// <returns></returns>
-        public TaxTotalType[] GetWithholdingTaxTotal(List<InvoiceLine> invoiceLines, string invoiceCurrencyCode)
+        private TaxTotalType[] GetWithholdingTaxTotal(List<InvoiceLine> invoiceLines, string? invoiceCurrencyCode)
         {
             var withholdingTaxs = invoiceLines.GroupBy(g => new { g.WithholdingTaxCode, g.WithholdingTaxPercent, g.WithholdingTaxName }).Select(s => new Tax { Amount=s.Sum(sum=>sum.WithholdingTaxAmount), Percent=s.Key.WithholdingTaxPercent, TaxCode=s.Key.WithholdingTaxCode,TaxName=s.Key.WithholdingTaxName}).ToList();
             decimal taxTotalAmount = withholdingTaxs.Sum(s => s.Amount);
             decimal taxableAmount = invoiceLines.Sum(s => s.KDVAmount);
 
             ///Vergilerin ayrıntıları
-            List<TaxSubtotalType> taxSubtotalTypes = new List<TaxSubtotalType>();
-            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(withholdingTaxs, taxSubtotalTypes.Count(), taxableAmount, invoiceCurrencyCode));
+            List<TaxSubtotalType> taxSubtotalTypes = new();
+            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(withholdingTaxs, taxSubtotalTypes.Count, taxableAmount, invoiceCurrencyCode));
 
             ///Faturadaki vergiler
-            List<TaxTotalType> taxTotalTypes = new List<TaxTotalType>();
+            List<TaxTotalType> taxTotalTypes = new();
             taxTotalTypes.Add(
                 new TaxTotalType
                 {
@@ -441,18 +452,18 @@ namespace Inowex.EInvoiceCreater
         /// </summary>
         /// <param name="faturaKalemDto"></param>
         /// <returns></returns>
-        public TaxTotalType GetWithholdingTaxTotalInvoiceLine(InvoiceLine invoiceLine, string invoiceCurrencyCode)
+        private TaxTotalType GetWithholdingTaxTotalInvoiceLine(InvoiceLine invoiceLine, string? invoiceCurrencyCode)
         {
             List<Tax> withholdingTaxs = (new[] { new Tax { Percent = invoiceLine.WithholdingTaxPercent, Amount = invoiceLine.WithholdingTaxAmount, TaxName = invoiceLine.WithholdingTaxName, TaxCode=invoiceLine.WithholdingTaxCode } }).ToList();
             decimal taxTotalAmount = withholdingTaxs.Sum(s => s.Amount);
             decimal taxableAmount = invoiceLine.KDVAmount;
 
             ///Vergilerin ayrıntıları
-            List<TaxSubtotalType> taxSubtotalTypes = new List<TaxSubtotalType>();
-            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(withholdingTaxs, taxSubtotalTypes.Count(), taxableAmount, invoiceCurrencyCode));
+            List<TaxSubtotalType> taxSubtotalTypes = new();
+            taxSubtotalTypes.AddRange(GetTaxSubtotalTypes(withholdingTaxs, taxSubtotalTypes.Count, taxableAmount, invoiceCurrencyCode));
 
             ///Fatura kalemine ait vergiler
-            TaxTotalType taxTotalType = new TaxTotalType
+            TaxTotalType taxTotalType = new()
             {
                 ///Kaleme uygulanan tüm vergilerin toplamı
                 TaxAmount = new TaxAmountType { Value = taxTotalAmount, currencyID = invoiceCurrencyCode },
@@ -543,9 +554,9 @@ namespace Inowex.EInvoiceCreater
         /// <param name="taxableAmount"></param>
         /// <param name="currencyCode"></param>
         /// <returns></returns>
-        private List<TaxSubtotalType> GetTaxSubtotalTypes(List<Tax> taxs, int index, decimal taxableAmount, string currencyCode)
+        private List<TaxSubtotalType> GetTaxSubtotalTypes(List<Tax> taxs, int index, decimal taxableAmount, string? currencyCode)
         {
-            List<TaxSubtotalType> taxSubtotalTypes = new List<TaxSubtotalType>();
+            List<TaxSubtotalType> taxSubtotalTypes = new();
             foreach (var tax in taxs.Where(w => w.Amount > 0))
             {
                 taxSubtotalTypes.Add(new TaxSubtotalType
@@ -613,12 +624,24 @@ namespace Inowex.EInvoiceCreater
         /// <returns></returns>
         public Dictionary<TaxTypes, string> GetTaxTypeWithCode()
         {
-            Dictionary<TaxTypes, string> taxTypeKeyValuePairs = new Dictionary<TaxTypes, string>();
+            Dictionary<TaxTypes, string> taxTypeKeyValuePairs = new();
             taxTypeKeyValuePairs.Add(TaxTypes.KDV, "0015");
             taxTypeKeyValuePairs.Add(TaxTypes.OTV, "0071");
             taxTypeKeyValuePairs.Add(TaxTypes.OIV, "4080");
 
             return taxTypeKeyValuePairs;
+        }
+
+        private Response<string> CheckInvoice(Invoice invoice)
+        {
+            Response <string> response = new() { IsSuccess=true};
+            if (invoice == null)
+            {
+                response.IsSuccess = false;
+                response.Description = "Invoice object is null";
+                return response;
+            }
+            return response;
         }
 
         #endregion Helper Function

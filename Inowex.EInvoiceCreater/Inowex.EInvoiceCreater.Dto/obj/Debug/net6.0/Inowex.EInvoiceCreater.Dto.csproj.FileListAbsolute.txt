@@ -1,0 +1,12 @@
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\bin\Debug\net6.0\Inowex.EInvoiceCreater.Dto.deps.json
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\bin\Debug\net6.0\Inowex.EInvoiceCreater.Dto.dll
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\bin\Debug\net6.0\Inowex.EInvoiceCreater.Dto.pdb
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\Inowex.EInvoiceCreater.Dto.csproj.AssemblyReference.cache
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\Inowex.EInvoiceCreater.Dto.GeneratedMSBuildEditorConfig.editorconfig
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\Inowex.EInvoiceCreater.Dto.AssemblyInfoInputs.cache
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\Inowex.EInvoiceCreater.Dto.AssemblyInfo.cs
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\Inowex.EInvoiceCreater.Dto.csproj.CoreCompileInputs.cache
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\Inowex.EInvoiceCreater.Dto.dll
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\refint\Inowex.EInvoiceCreater.Dto.dll
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\Inowex.EInvoiceCreater.Dto.pdb
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Dto\obj\Debug\net6.0\ref\Inowex.EInvoiceCreater.Dto.dll

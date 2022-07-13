@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Inowex.EInvoiceCreater.Dto
 {
+    /// <summary>
+    /// Fatura profilleri
+    /// </summary>
     public enum ProfileIds
     {
         EARSIVFATURA=1,

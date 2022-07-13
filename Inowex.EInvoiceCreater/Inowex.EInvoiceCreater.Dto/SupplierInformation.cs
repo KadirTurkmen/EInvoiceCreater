@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Inowex.EInvoiceCreater.Dto
 {
+    /// <summary>
+    /// Tedarikçi bilgileri
+    /// </summary>
     public class SupplierInformation : CompanyInformation
     {
 

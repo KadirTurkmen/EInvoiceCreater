@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Inowex.EInvoiceCreater.Dto
 {
+    /// <summary>
+    /// Firma kimlik türleri
+    /// </summary>
     public enum SchemeIds
     {
         VKN=1,

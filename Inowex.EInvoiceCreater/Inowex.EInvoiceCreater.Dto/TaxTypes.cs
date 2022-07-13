@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Inowex.EInvoiceCreater.Dto
 {
+    /// <summary>
+    /// Vergi Türleri
+    /// </summary>
     public enum TaxTypes
     {
        KDV=1,

@@ -5,7 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Inowex.EInvoiceCreater.Dto
-{
+{ 
+    /// <summary>
+    /// Müşteri bilgileri
+    /// </summary>
     public class CustomerInformation : CompanyInformation
     {
 

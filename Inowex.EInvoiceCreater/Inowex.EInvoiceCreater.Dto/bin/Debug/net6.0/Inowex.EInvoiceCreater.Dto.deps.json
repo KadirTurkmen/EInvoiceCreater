@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Inowex.EInvoiceCreater.Dto/1.0.0": {
+        "runtime": {
+          "Inowex.EInvoiceCreater.Dto.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Inowex.EInvoiceCreater.Dto/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,0 +1,5 @@
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\Inowex.EInvoiceCreater.Bll.csproj.AssemblyReference.cache
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\Inowex.EInvoiceCreater.Bll.GeneratedMSBuildEditorConfig.editorconfig
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\Inowex.EInvoiceCreater.Bll.AssemblyInfoInputs.cache
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\Inowex.EInvoiceCreater.Bll.AssemblyInfo.cs
+D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\Inowex.EInvoiceCreater.Bll.csproj.CoreCompileInputs.cache
