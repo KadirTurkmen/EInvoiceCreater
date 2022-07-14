@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "cnGT+v1TkTjT/QTazVnv815c6FIke5udwYQchR0H2z7vL/WwYIAMlDd/1LHmHd3TmjEv3AVl2T7FICZXF9fewQ==",
+  "dgSpecHash": "v09rpIP24yXtRHdLKcYJ+b0xLeoRhx71eq/vk2NRjLvJ7wbqFMh/5rsFMfH/wAU9+kWrs6Fh3+mXWsX3JxtHHQ==",
   "success": true,
   "projectFilePath": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Bll\\Inowex.EInvoiceCreater.Bll.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Kadir\\.nuget\\packages\\fluentvalidation\\11.1.0\\fluentvalidation.11.1.0.nupkg.sha512",
     "C:\\Users\\Kadir\\.nuget\\packages\\ubltr\\1.1.6\\ubltr.1.1.6.nupkg.sha512"
   ],
   "logs": []

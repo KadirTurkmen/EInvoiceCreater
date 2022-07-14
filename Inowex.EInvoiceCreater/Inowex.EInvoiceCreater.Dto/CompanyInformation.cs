@@ -15,7 +15,6 @@ namespace Inowex.EInvoiceCreater.Dto
         /// <summary>
         /// Firma blok bilgisi
         /// </summary>
-        [Required(ErrorMessage = "BlockName is required")]
         public string? BlockName { get; set; }
 
         /// <summary>
@@ -57,7 +56,6 @@ namespace Inowex.EInvoiceCreater.Dto
         /// <summary>
         /// Firma mail bilgisi
         /// </summary>
-        [Required(ErrorMessage = "Mail is required")]
         public string? Mail { get; set; }
 
         /// <summary>
@@ -93,6 +91,7 @@ namespace Inowex.EInvoiceCreater.Dto
         /// Firma vergi numarası
         /// </summary>
         [Required(ErrorMessage = "TaxNumber is required")]
+        [MaxLength(11),MinLength(10)]
         public string? TaxNumber { get; set; }
 
         /// <summary>

@@ -1,0 +1,70 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Inowex.EInvoiceCreater.Bll/1.0.0": {
+        "dependencies": {
+          "Inowex.EInvoiceCreater.Dto": "1.0.0",
+          "UblTr": "1.1.6"
+        },
+        "runtime": {
+          "Inowex.EInvoiceCreater.Bll.dll": {}
+        }
+      },
+      "FluentValidation/11.1.0": {
+        "runtime": {
+          "lib/net6.0/FluentValidation.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.1.0.0"
+          }
+        }
+      },
+      "UblTr/1.1.6": {
+        "runtime": {
+          "lib/net6.0/UblTr.dll": {
+            "assemblyVersion": "1.1.6.0",
+            "fileVersion": "1.1.6.0"
+          }
+        }
+      },
+      "Inowex.EInvoiceCreater.Dto/1.0.0": {
+        "dependencies": {
+          "FluentValidation": "11.1.0"
+        },
+        "runtime": {
+          "Inowex.EInvoiceCreater.Dto.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Inowex.EInvoiceCreater.Bll/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FluentValidation/11.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ld7w+2jOmnhQqFkngEGuEWTRa5j6u4Xzli7jKxRtbA5PtuHHcpin01qxvxYL0LomeJuzRMGAOURu2rKONdjKQA==",
+      "path": "fluentvalidation/11.1.0",
+      "hashPath": "fluentvalidation.11.1.0.nupkg.sha512"
+    },
+    "UblTr/1.1.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-QNIS8mpVDahSRXoM5df5WZddBhjb43URBK8Bp0EIOGNfI4p/J84/ovwVJqeVhH5gO8opbS5j4topyhxgw97HQA==",
+      "path": "ubltr/1.1.6",
+      "hashPath": "ubltr.1.1.6.nupkg.sha512"
+    },
+    "Inowex.EInvoiceCreater.Dto/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

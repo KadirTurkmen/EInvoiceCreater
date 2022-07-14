@@ -1,4 +1,9 @@
-﻿using Inowex.EInvoiceCreater.Dto;
+﻿using FluentValidation;
+using Inowex.EInvoiceCreater.Bll.Validation.CustomerInformationValidation;
+using Inowex.EInvoiceCreater.Bll.Validation.InvoiceLineValidation;
+using Inowex.EInvoiceCreater.Bll.Validation.InvoiceValidation;
+using Inowex.EInvoiceCreater.Bll.Validation.SupplierInformationValidation;
+using Inowex.EInvoiceCreater.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +19,7 @@ namespace Inowex.EInvoiceCreater
     public interface IEInvoiceCreate
     {
         Response<string> InvoiceToXml(Invoice invoice);
+        Invoice GetExampleInvoiceObject(byte[] xslt);
     }
 
     public class EInvoiceCreate : IEInvoiceCreate
@@ -25,15 +31,41 @@ namespace Inowex.EInvoiceCreater
         /// <returns></returns>
         public Response<string> InvoiceToXml(Invoice invoice)
         {
-            var checkInvoice = CheckInvoice(invoice);
-            if (!checkInvoice.IsSuccess)
-                return checkInvoice;
+            var checkObject = Check(invoice);
+            if (!checkObject.IsSuccess)
+                return checkObject;
 
             var invoiceType = GetInvoiceType(invoice);
             string invoiceAsXml = InvoiceTypeToXml(invoiceType);
             WriteToDiskAsXml(invoiceAsXml, invoiceType.ID.Value);
-            
-            return new() { Result = invoiceAsXml,IsSuccess=true };
+
+            return new() { Data = invoiceAsXml, IsSuccess = true };
+        }
+
+        /// <summary>
+        /// Fatura modelinin doğrulamasını yapar
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
+        public Response<string> Check(Invoice invoice)
+        {
+            var checkInvoice = CheckInvoice(invoice);
+            if (!checkInvoice.IsSuccess)
+                return checkInvoice;
+
+            var checkInvoiceLine = CheckInvoiceLine(invoice);
+            if (!checkInvoiceLine.IsSuccess)
+                return checkInvoiceLine;
+
+            var checkInvoiceCustomerInformation = CheckInvoiceCustomerInformation(invoice);
+            if (!checkInvoiceCustomerInformation.IsSuccess)
+                return checkInvoiceCustomerInformation;
+
+            var checkInvoiceSupplierInformation = CheckInvoiceSupplierInformation(invoice);
+            if (!checkInvoiceSupplierInformation.IsSuccess)
+                return checkInvoiceSupplierInformation;
+
+            return new() { IsSuccess = true };
         }
 
         /// <summary>
@@ -121,7 +153,7 @@ namespace Inowex.EInvoiceCreater
         /// <returns></returns>
         private PartyType GetPartyType(CompanyInformation? companyInformation)
         {
-            if(companyInformation==null)
+            if (companyInformation == null)
                 return new PartyType();
 
             ///Müşteri kimlik bilgileridir.
@@ -131,16 +163,16 @@ namespace Inowex.EInvoiceCreater
                 partyIdentificationTypes.Add(new PartyIdentificationType { ID = new IDType { schemeID = SchemeIds.MERSISNO.ToString(), Value = companyInformation.MersisNo } });
 
             ///Firma adı bilgisidir.
-            PartyNameType partyNameType = new(){ Name = new NameType1 { Value = companyInformation.Name } };
+            PartyNameType partyNameType = new() { Name = new NameType1 { Value = companyInformation.Name } };
 
             ///Firma Daire numarası bilgisidir.
-            RoomType roomType = new(){ Value = companyInformation.Room };
+            RoomType roomType = new() { Value = companyInformation.Room };
 
             ///Firma Adres Blok adı bilgisidir.
-            BlockNameType blockNameType = new(){ Value = companyInformation.BlockName };
+            BlockNameType blockNameType = new() { Value = companyInformation.BlockName };
 
             ///Firma Bina adı bilgisidir.
-            BuildingNameType buildingNameType = new(){ Value = companyInformation.BuildingName };
+            BuildingNameType buildingNameType = new() { Value = companyInformation.BuildingName };
 
             ///Firma Bina numarası bilgisidir.
             BuildingNumberType buildingNumberType = new() { Value = companyInformation.BuildingNumber };
@@ -323,7 +355,7 @@ namespace Inowex.EInvoiceCreater
         /// <returns></returns>
         private NoteType[] GetInvoiceNote(Invoice invoice)
         {
-            if(invoice.Notes==null)
+            if (invoice.Notes == null)
                 return Array.Empty<NoteType>();
 
             List<NoteType> noteTypes = new();
@@ -360,7 +392,7 @@ namespace Inowex.EInvoiceCreater
         /// <returns></returns>
         private TaxTotalType[] GetTaxTotal(List<InvoiceLine> invoiceLines, string? invoiceCurrencyCode)
         {
-            List<Tax> kdvTotalAmount = invoiceLines.GroupBy(g => g.KDVPercent).Select(s => new Tax { Percent = s.Key, Amount = s.Sum(sum => sum.KDVAmount), TaxName = TaxTypes.KDV.ToString(), TaxCode= GetTaxTypeWithCode().Where(w => w.Key == TaxTypes.KDV).FirstOrDefault().Value }).ToList();
+            List<Tax> kdvTotalAmount = invoiceLines.GroupBy(g => g.KDVPercent).Select(s => new Tax { Percent = s.Key, Amount = s.Sum(sum => sum.KDVAmount), TaxName = TaxTypes.KDV.ToString(), TaxCode = GetTaxTypeWithCode().Where(w => w.Key == TaxTypes.KDV).FirstOrDefault().Value }).ToList();
             List<Tax> otvTotalAmount = invoiceLines.GroupBy(g => g.OTVPercent).Select(s => new Tax { Percent = s.Key, Amount = s.Sum(sum => sum.OTVAmount), TaxName = TaxTypes.OTV.ToString(), TaxCode = GetTaxTypeWithCode().Where(w => w.Key == TaxTypes.OTV).FirstOrDefault().Value }).ToList();
             List<Tax> oivTotalAmount = invoiceLines.GroupBy(g => g.OIVPercent).Select(s => new Tax { Percent = s.Key, Amount = s.Sum(sum => sum.OIVAmount), TaxName = TaxTypes.OIV.ToString(), TaxCode = GetTaxTypeWithCode().Where(w => w.Key == TaxTypes.OIV).FirstOrDefault().Value }).ToList();
             decimal taxTotalAmount = kdvTotalAmount.Sum(s => s.Amount) + otvTotalAmount.Sum(s => s.Amount) + oivTotalAmount.Sum(s => s.Amount);
@@ -425,7 +457,7 @@ namespace Inowex.EInvoiceCreater
         /// <returns></returns>
         private TaxTotalType[] GetWithholdingTaxTotal(List<InvoiceLine> invoiceLines, string? invoiceCurrencyCode)
         {
-            var withholdingTaxs = invoiceLines.GroupBy(g => new { g.WithholdingTaxCode, g.WithholdingTaxPercent, g.WithholdingTaxName }).Select(s => new Tax { Amount=s.Sum(sum=>sum.WithholdingTaxAmount), Percent=s.Key.WithholdingTaxPercent, TaxCode=s.Key.WithholdingTaxCode,TaxName=s.Key.WithholdingTaxName}).ToList();
+            var withholdingTaxs = invoiceLines.GroupBy(g => new { g.WithholdingTaxCode, g.WithholdingTaxPercent, g.WithholdingTaxName }).Select(s => new Tax { Amount = s.Sum(sum => sum.WithholdingTaxAmount), Percent = s.Key.WithholdingTaxPercent, TaxCode = s.Key.WithholdingTaxCode, TaxName = s.Key.WithholdingTaxName }).ToList();
             decimal taxTotalAmount = withholdingTaxs.Sum(s => s.Amount);
             decimal taxableAmount = invoiceLines.Sum(s => s.KDVAmount);
 
@@ -454,7 +486,7 @@ namespace Inowex.EInvoiceCreater
         /// <returns></returns>
         private TaxTotalType GetWithholdingTaxTotalInvoiceLine(InvoiceLine invoiceLine, string? invoiceCurrencyCode)
         {
-            List<Tax> withholdingTaxs = (new[] { new Tax { Percent = invoiceLine.WithholdingTaxPercent, Amount = invoiceLine.WithholdingTaxAmount, TaxName = invoiceLine.WithholdingTaxName, TaxCode=invoiceLine.WithholdingTaxCode } }).ToList();
+            List<Tax> withholdingTaxs = (new[] { new Tax { Percent = invoiceLine.WithholdingTaxPercent, Amount = invoiceLine.WithholdingTaxAmount, TaxName = invoiceLine.WithholdingTaxName, TaxCode = invoiceLine.WithholdingTaxCode } }).ToList();
             decimal taxTotalAmount = withholdingTaxs.Sum(s => s.Amount);
             decimal taxableAmount = invoiceLine.KDVAmount;
 
@@ -473,14 +505,81 @@ namespace Inowex.EInvoiceCreater
             return taxTotalType;
         }
 
-        public void GetExampleInvoiceObject()
+        /// <summary>
+        /// Örnek fatura bilgileri
+        /// </summary>
+        /// <param name="xslt"></param>
+        /// <returns></returns>
+        public Invoice GetExampleInvoiceObject(byte[] xslt)
         {
+            Invoice invoice = new()
+            {
+                CopyIndicator = true,
+                CurrencyIso4217Code = "TRY",
+                CustomerInfo = new CustomerInformation()
+                {
+                    TaxNumber = "11111111111",
+                    TaxOffice = "KADIKÖY",
+                    Country = "Türkiye",
+                    City = "İstanbul",
+                    CitySubdivision = "Kadıköy",
+                    Name = "TEST LİMİTED ŞİRKETİ",
+                    EmailTag = "urn:mail:defaultpk@test.com.tr",
+                    BuildingName="Test Teknoloji Binası",
+                    BuildingNumber="1",
+                    Phone="11111111",
+                    PostalZone="123123",
+                    Room="1",
+                    
+                },
+                Date = DateTime.Now,
+                Guid = Guid.NewGuid(),
+                InvioceType = InvoiceTypes.SATIS,
+                ScenarioType = ProfileIds.TICARIFATURA,
+                No = "AND2022000000002",
+                SupplierInfo = new SupplierInformation()
+                {
+                    TaxNumber = "11111111111",
+                    TaxOffice = "KADIKÖY",
+                    Country = "Türkiye",
+                    City = "İstanbul",
+                    CitySubdivision = "Kadıköy",
+                    Name = "TEST LİMİTED ŞİRKETİ",
+                    EmailTag = "urn:mail:defaultpk@test.com.tr",
+                    BuildingName = "Test Teknoloji Binası",
+                    BuildingNumber = "1",
+                    Phone = "11111111",
+                    PostalZone = "123123",
+                    Room = "1",
+                },
+                InvoiceLine = new()
+                {
+                    new InvoiceLine()
+                    {
+                        DiscountPercent = 0,
+                        DiscountPrice = 0,
+                        KDVAmount = 37.44M,
+                        KDVPercent = 18M,
+                        LineTotalAmount = 208M,
+                        OIVAmount = 0,
+                        OIVPercent = 0,
+                        OTVAmount = 0,
+                        OTVPercent = 0,
+                        Quantity = 16,
+                        RowNumber = 1,
+                        StockCode = "0001",
+                        StockName = "Bilgisayar",
+                        UnitIsoCode = "C62",
+                        UnitPrice = 13M,
+                        WithholdingTaxAmount = 0,
+                        WithholdingTaxPercent = 0,
+                    },
+                },
+                Xslt = xslt,
 
-        }
+            };
 
-        public void GetExampleXsltFile()
-        {
-
+            return invoice;
         }
 
         /*
@@ -545,7 +644,6 @@ namespace Inowex.EInvoiceCreater
 
 
         #region Helper Function
-
         /// <summary>
         /// Vergi bilgilerini subtotaltype listesi olarak hazırlar.
         /// </summary>
@@ -632,18 +730,80 @@ namespace Inowex.EInvoiceCreater
             return taxTypeKeyValuePairs;
         }
 
+        /// <summary>
+        /// Fatura doğrulamasını yapar
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
         private Response<string> CheckInvoice(Invoice invoice)
         {
-            Response <string> response = new() { IsSuccess=true};
-            if (invoice == null)
+            Response<string> response = new() { IsSuccess = true };
+            var validator = new InvoiceValidator();
+            var result = validator.Validate(invoice);
+            if (!result.IsValid)
             {
                 response.IsSuccess = false;
-                response.Description = "Invoice object is null";
-                return response;
+                response.Errors = result.Errors.Select(s => new Error { Key = s.PropertyName.ToString(), Message = s.ErrorMessage }).ToList();
             }
             return response;
         }
 
+        /// <summary>
+        /// Fatura kalemlerinin doğrulamasını yapar
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
+        private Response<string> CheckInvoiceLine(Invoice invoice)
+        {
+            Response<string> response = new() { IsSuccess = true };
+            var validator = new InvoiceLineValidator();
+            foreach (var invoiceLine in invoice.InvoiceLine)
+            {
+                var result = validator.Validate(invoiceLine);
+                if (!result.IsValid)
+                {
+                    response.IsSuccess = false;
+                    response.Errors = result.Errors.Select(s => new Error { Key = s.PropertyName.ToString(), Message = s.ErrorMessage }).ToList();
+                }
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// Faturadaki müşteri bilgilerinin doğrulamasını yapar
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
+        private Response<string> CheckInvoiceCustomerInformation(Invoice invoice)
+        {
+            Response<string> response = new() { IsSuccess = true };
+            var validator = new CustomerInformationValidator();
+            var result = validator.Validate(invoice.CustomerInfo);
+            if (!result.IsValid)
+            {
+                response.IsSuccess = false;
+                response.Errors = result.Errors.Select(s => new Error { Key = s.PropertyName.ToString(), Message = s.ErrorMessage }).ToList();
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// Faturadaki tedarikçi bilgilerinin doğrulamasını yapar
+        /// </summary>
+        /// <param name="invoice"></param>
+        /// <returns></returns>
+        private Response<string> CheckInvoiceSupplierInformation(Invoice invoice)
+        {
+            Response<string> response = new() { IsSuccess = true };
+            var validator = new SupplierInformationValidator();
+            var result = validator.Validate(invoice.SupplierInfo);
+            if (!result.IsValid)
+            {
+                response.IsSuccess = false;
+                response.Errors = result.Errors.Select(s => new Error { Key = s.PropertyName.ToString(), Message = s.ErrorMessage }).ToList();
+            }
+            return response;
+        }
         #endregion Helper Function
     }
 }

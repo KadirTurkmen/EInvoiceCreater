@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace Inowex.EInvoiceCreater.Dto
         /// Fatura numarasıdır
         /// </summary>
         [Required(ErrorMessage = "No is required")]
+        [StringLength(16)]
         public string? No { get; set; }
         /// <summary>
         /// Fatura dipnot bilgileridir

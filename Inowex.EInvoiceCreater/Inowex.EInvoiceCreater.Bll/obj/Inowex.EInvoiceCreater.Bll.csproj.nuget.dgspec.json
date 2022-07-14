@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Bll\\Inowex.EInvoiceCreater.Bll.csproj",
-        "projectName": "Inowex.EInvoiceCreater.Bll",
+        "projectName": "Inowex.EInvoiceCreater",
         "projectPath": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Bll\\Inowex.EInvoiceCreater.Bll.csproj",
         "packagesPath": "C:\\Users\\Kadir\\.nuget\\packages\\",
         "outputPath": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Bll\\obj\\",
@@ -123,6 +123,12 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.1.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

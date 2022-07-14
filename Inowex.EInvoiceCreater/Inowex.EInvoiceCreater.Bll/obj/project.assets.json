@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "FluentValidation/11.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/FluentValidation.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/FluentValidation.dll": {}
+        }
+      },
       "UblTr/1.1.6": {
         "type": "package",
         "compile": {
@@ -14,6 +23,9 @@
       "Inowex.EInvoiceCreater.Dto/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "FluentValidation": "11.1.0"
+        },
         "compile": {
           "bin/placeholder/Inowex.EInvoiceCreater.Dto.dll": {}
         },
@@ -24,6 +36,27 @@
     }
   },
   "libraries": {
+    "FluentValidation/11.1.0": {
+      "sha512": "Ld7w+2jOmnhQqFkngEGuEWTRa5j6u4Xzli7jKxRtbA5PtuHHcpin01qxvxYL0LomeJuzRMGAOURu2rKONdjKQA==",
+      "type": "package",
+      "path": "fluentvalidation/11.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fluent-validation-icon.png",
+        "fluentvalidation.11.1.0.nupkg.sha512",
+        "fluentvalidation.nuspec",
+        "lib/net5.0/FluentValidation.dll",
+        "lib/net5.0/FluentValidation.xml",
+        "lib/net6.0/FluentValidation.dll",
+        "lib/net6.0/FluentValidation.xml",
+        "lib/netstandard2.0/FluentValidation.dll",
+        "lib/netstandard2.0/FluentValidation.xml",
+        "lib/netstandard2.1/FluentValidation.dll",
+        "lib/netstandard2.1/FluentValidation.xml"
+      ]
+    },
     "UblTr/1.1.6": {
       "sha512": "QNIS8mpVDahSRXoM5df5WZddBhjb43URBK8Bp0EIOGNfI4p/J84/ovwVJqeVhH5gO8opbS5j4topyhxgw97HQA==",
       "type": "package",
@@ -67,7 +100,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Bll\\Inowex.EInvoiceCreater.Bll.csproj",
-      "projectName": "Inowex.EInvoiceCreater.Bll",
+      "projectName": "Inowex.EInvoiceCreater",
       "projectPath": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Bll\\Inowex.EInvoiceCreater.Bll.csproj",
       "packagesPath": "C:\\Users\\Kadir\\.nuget\\packages\\",
       "outputPath": "D:\\inowex\\EInvoiceCreater\\Inowex.EInvoiceCreater\\Inowex.EInvoiceCreater.Bll\\obj\\",
