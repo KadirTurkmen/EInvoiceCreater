@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inowex.EInvoiceCreater.Dto
-{ 
+namespace Inowex.EInvoiceCreater.Bll.Models
+{
     /// <summary>
-    /// Müşteri bilgileri
+    /// Vergi Türleri
     /// </summary>
-    public class CustomerInformation : CompanyInformation
+    public enum TaxTypes
     {
-
+       KDV=1,
+       OTV,
+       OIV
     }
 }

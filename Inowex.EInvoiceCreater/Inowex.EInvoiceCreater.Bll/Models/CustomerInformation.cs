@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inowex.EInvoiceCreater.Dto
-{
+namespace Inowex.EInvoiceCreater.Bll.Models
+{ 
     /// <summary>
-    /// Firma kimlik türleri
+    /// Müşteri bilgileri
     /// </summary>
-    public enum SchemeIds
+    public class CustomerInformation : CompanyInformation
     {
-        VKN=1,
-        MERSISNO
+
     }
 }

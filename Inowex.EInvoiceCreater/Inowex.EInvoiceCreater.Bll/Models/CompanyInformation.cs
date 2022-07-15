@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Inowex.EInvoiceCreater.Dto
+namespace Inowex.EInvoiceCreater.Bll.Models
 {
     /// <summary>
     /// Firma bilgileri

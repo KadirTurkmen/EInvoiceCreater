@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Inowex.EInvoiceCreater.Bll.Validation.CompanyInformationValidation;
-using Inowex.EInvoiceCreater.Dto;
+using Inowex.EInvoiceCreater.Bll.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

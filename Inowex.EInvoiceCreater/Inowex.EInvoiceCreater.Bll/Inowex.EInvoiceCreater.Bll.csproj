@@ -19,11 +19,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="11.1.0" />
     <PackageReference Include="UblTr" Version="1.1.6" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Inowex.EInvoiceCreater.Dto\Inowex.EInvoiceCreater.Dto.csproj" />
   </ItemGroup>
 
   <ItemGroup>

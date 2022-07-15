@@ -3,7 +3,7 @@ using Inowex.EInvoiceCreater.Bll.Validation.CustomerInformationValidation;
 using Inowex.EInvoiceCreater.Bll.Validation.InvoiceLineValidation;
 using Inowex.EInvoiceCreater.Bll.Validation.InvoiceValidation;
 using Inowex.EInvoiceCreater.Bll.Validation.SupplierInformationValidation;
-using Inowex.EInvoiceCreater.Dto;
+using Inowex.EInvoiceCreater.Bll.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
