@@ -6,11 +6,7 @@ D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\
 D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\bin\Debug\net6.0\Inowex.EInvoiceCreater.Bll.deps.json
 D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\bin\Debug\net6.0\Inowex.EInvoiceCreater.Bll.dll
 D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\bin\Debug\net6.0\Inowex.EInvoiceCreater.Bll.pdb
-D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\bin\Debug\net6.0\Inowex.EInvoiceCreater.Dto.dll
-D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\bin\Debug\net6.0\Inowex.EInvoiceCreater.Dto.pdb
-D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\Inowex.EInvoiceCreater.Bll.csproj.CopyComplete
 D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\Inowex.EInvoiceCreater.Bll.dll
 D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\refint\Inowex.EInvoiceCreater.Bll.dll
 D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\Inowex.EInvoiceCreater.Bll.pdb
 D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\obj\Debug\net6.0\ref\Inowex.EInvoiceCreater.Bll.dll
-D:\inowex\EInvoiceCreater\Inowex.EInvoiceCreater\Inowex.EInvoiceCreater.Bll\bin\Debug\net6.0\Document\general.xslt

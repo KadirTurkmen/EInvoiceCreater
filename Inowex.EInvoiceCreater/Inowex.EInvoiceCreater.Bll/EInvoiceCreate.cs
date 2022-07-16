@@ -37,7 +37,6 @@ namespace Inowex.EInvoiceCreater
 
             var invoiceType = GetInvoiceType(invoice);
             string invoiceAsXml = InvoiceTypeToXml(invoiceType);
-            WriteToDiskAsXml(invoiceAsXml, invoiceType.ID.Value);
 
             return new() { Data = invoiceAsXml, IsSuccess = true };
         }
@@ -699,21 +698,6 @@ namespace Inowex.EInvoiceCreater
             var readXml = srRead.ReadToEnd();
 
             return readXml;
-        }
-
-        /// <summary>
-        /// Xml dosyasını diske yazar.
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="fileName"></param>
-        private void WriteToDiskAsXml(string data, string fileName)
-        {
-            var path = AppDomain.CurrentDomain.BaseDirectory + "EFaturaTest" + "\\" + fileName + ".xml";
-            using (var streamWriter = new StreamWriter(path, append: false, Encoding.UTF8))
-            {
-                streamWriter.Write(data);
-                streamWriter.Close();
-            }
         }
 
         /// <summary>
